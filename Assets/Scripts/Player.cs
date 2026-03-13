@@ -91,6 +91,7 @@ public class Player : MonoBehaviour {
                 score = score,
             });
             Destroy(gameObject);
+            GameInput.Instance.Dispose();
         }
     }
 

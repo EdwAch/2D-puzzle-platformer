@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-    [SerializeField] private int levelNumber;
+    private static int levelNumber = 1;
 
     [SerializeField] private List<GameLevel> gameLevelList;
     
@@ -41,5 +42,14 @@ public class GameManager : MonoBehaviour {
 
     public int GetScore() {
         return score;
+    }
+
+    public void GoToNextLevel() {
+        levelNumber++;
+        SceneManager.LoadScene(0);
+    }
+
+    public void RetryLevel() {
+        SceneManager.LoadScene(0);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,11 +8,14 @@ public class EndUI : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI titleTextMesh;
     [SerializeField] private TextMeshProUGUI statsTextMesh;
+    [SerializeField] private TextMeshProUGUI nextButtonTextMesh;
     [SerializeField] private Button nextButton;
 
+    private Action nextButtonClickAction;
+    
     private void Awake() {
         nextButton.onClick.AddListener(() => {
-            SceneManager.LoadScene(0);
+            nextButtonClickAction();
         });
     }
 
@@ -25,8 +29,12 @@ public class EndUI : MonoBehaviour {
         
         if (e.endType == Player.EndType.LevelComplete) {
             titleTextMesh.text = "Level Completed!";
+            nextButtonTextMesh.text = "Next Level";
+            nextButtonClickAction = GameManager.Instance.GoToNextLevel;
         } else {
             titleTextMesh.text = "Level Failed!";
+            nextButtonTextMesh.text = "Retry";
+            nextButtonClickAction = GameManager.Instance.RetryLevel;
         }
 
         statsTextMesh.text =
