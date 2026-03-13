@@ -17,12 +17,14 @@ public class Player : MonoBehaviour {
     [SerializeField] private float jumpForce;
     [SerializeField] private float maxMoveSpeed;
     [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private LayerMask slipperyGroundLayerMask;
 
     private int score;
     private Rigidbody2D playerRigidbody2D;
     private CapsuleCollider2D playerCapsuleCollider2D;
     private bool doubleJump;
     private bool isJumpActionPressed;
+    private bool isOnSlipperySurface;
 
     public enum EndType {
         LevelComplete,
@@ -43,15 +45,28 @@ public class Player : MonoBehaviour {
         if (GameInput.Instance.IsJumpActionPressed()) {
             isJumpActionPressed = true;
         }
+        isOnSlipperySurface = playerRigidbody2D.IsTouchingLayers(slipperyGroundLayerMask);
     }
     
     private void FixedUpdate() {
+        
         if (GameInput.Instance.IsRightActionPressed() && MathF.Abs(playerRigidbody2D.linearVelocityX) < maxMoveSpeed) {
             playerRigidbody2D.AddForce(transform.right * moveSpeed);
-        } 
-        
+        } else if (!GameInput.Instance.IsRightActionPressed() && !GameInput.Instance.IsLeftActionPressed()) {
+            if (IsGrounded() && !isOnSlipperySurface) {
+                playerRigidbody2D.linearVelocityX = 0;
+            }
+        } else if (GameInput.Instance.IsRightActionPressed() && GameInput.Instance.IsLeftActionPressed()) {
+            playerRigidbody2D.linearVelocityX = 0;
+        }
         if (GameInput.Instance.IsLeftActionPressed() && MathF.Abs(playerRigidbody2D.linearVelocityX) < maxMoveSpeed) {
             playerRigidbody2D.AddForce(-transform.right * moveSpeed);
+        } else if (!GameInput.Instance.IsRightActionPressed() && !GameInput.Instance.IsLeftActionPressed()) {
+            if (IsGrounded() && !isOnSlipperySurface) {
+                playerRigidbody2D.linearVelocityX = 0;
+            }
+        } else if (GameInput.Instance.IsRightActionPressed() && GameInput.Instance.IsLeftActionPressed()) {
+            playerRigidbody2D.linearVelocityX = 0;
         }
 
         if (IsGrounded() && !isJumpActionPressed) {
@@ -98,7 +113,7 @@ public class Player : MonoBehaviour {
     private bool IsGrounded() {
         float extraHeight = 0.1f;
         RaycastHit2D raycastHit = Physics2D.CapsuleCast(playerCapsuleCollider2D.bounds.center,
-            playerCapsuleCollider2D.bounds.size, playerCapsuleCollider2D.direction, 0f, Vector2.down, extraHeight, groundLayerMask);
+            playerCapsuleCollider2D.bounds.size, playerCapsuleCollider2D.direction, 0f, Vector2.down, extraHeight, groundLayerMask | slipperyGroundLayerMask);
         return raycastHit.collider != null;
     }
 }

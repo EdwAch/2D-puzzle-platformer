@@ -312,6 +312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndUI
   titleTextMesh: {fileID: 1149375750}
   statsTextMesh: {fileID: 1337448346}
+  nextButtonTextMesh: {fileID: 23448236}
   nextButton: {fileID: 1261406441}
 --- !u!1 &235404261
 GameObject:
@@ -1860,6 +1861,9 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 8
+  slipperyGroundLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1397917663
 Transform:
   m_ObjectHideFlags: 0
@@ -2075,9 +2079,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09e26a78abab2d231950dad2c0cb699e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  levelNumber: 1
   gameLevelList:
   - {fileID: -2795141540768919786, guid: 5db02661636dc20459c99cad25ff2fea, type: 3}
+  - {fileID: -2795141540768919786, guid: 89eb335997b3e644b9917c8b0c9005c6, type: 3}
 --- !u!4 &2068591572
 Transform:
   m_ObjectHideFlags: 0
